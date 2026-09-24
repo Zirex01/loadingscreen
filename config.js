@@ -87,7 +87,7 @@ config.background_images_fade_duration = 2000
 
 // Enable background overlay?
 // "true" or "false"
-config.background_overlay = true
+config.background_overlay = false
 
 // Background darkening amount
 // 0 for none (0%), 100 for pitch black (100%)
