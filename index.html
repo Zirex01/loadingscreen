@@ -11,77 +11,125 @@
 					'">'
 			);
 		</script>
-		<!-- ===== Barra de carga (Genkai) ===== -->
+		<!-- ===== Barra de carga estilo ninja (Genkai) ===== -->
 		<style>
 			#status-container {
 				position: fixed;
 				left: 50%;
-				bottom: 22px;
-				width: 46%;
-				margin-left: -23%;
+				bottom: 20px;
+				width: 50%;
+				margin-left: -25%;
 				font-size: 14px;
 				line-height: 18px;
 				z-index: 5;
 			}
 			#status-left {
 				float: left;
-				max-width: 80%;
+				max-width: 78%;
+				margin-left: 26px;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
-				color: #cfe6ff;
+				font-family: Georgia, "Times New Roman", serif;
+				font-style: italic;
+				color: #d6ecff;
 				letter-spacing: 1px;
+			}
+			#status-left:before {
+				content: "\25C6  ";
+				color: #3fa0ff;
+				font-style: normal;
 			}
 			#status-right {
 				float: right;
+				margin-right: 26px;
+				font-family: Georgia, "Times New Roman", serif;
 				font-weight: bold;
+				font-size: 16px;
 				color: #ffffff;
+				text-shadow: 0 0 8px #2f8bff, 2px 2px 0 rgba(0, 0, 0, 0.6);
 			}
+
+			/* ---- Pergamino (track) ---- */
 			#loading {
 				clear: both;
 				position: relative;
-				top: 6px;
-				width: 100%;
-				height: 8px;
-				overflow: hidden;
-				border-radius: 8px;
-				background-color: rgba(5, 15, 45, 0.75);
-				border: 1px solid rgba(90, 170, 255, 0.45);
-				box-shadow: 0 0 10px rgba(30, 110, 255, 0.35);
+				top: 8px;
+				height: 14px;
+				margin: 0 14px;
+				background-color: #0b1224;
+				background-image: -webkit-repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 4px, transparent 4px, transparent 8px);
+				background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 4px, transparent 4px, transparent 8px);
+				border-top: 2px solid #c9b58a;
+				border-bottom: 2px solid #c9b58a;
+				box-shadow: 0 0 14px rgba(20, 90, 255, 0.35), inset 0 0 6px rgba(0, 0, 0, 0.9);
 			}
+			/* Rodillos de madera del pergamino */
+			#loading:before,
+			#loading:after {
+				content: "";
+				position: absolute;
+				top: -6px;
+				width: 12px;
+				height: 22px;
+				border-radius: 4px;
+				background: #6b3f1d;
+				background: -webkit-linear-gradient(left, #3d220e, #9a6331 45%, #5a3417);
+				background: linear-gradient(to right, #3d220e, #9a6331 45%, #5a3417);
+				border: 1px solid #2a1608;
+				box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+			}
+			#loading:before { left: -13px; }
+			#loading:after  { right: -13px; }
+
+			/* ---- Chakra (relleno) ---- */
 			#loading-progress {
 				position: relative;
 				height: 100%;
 				width: 0%;
-				min-width: 4%;
-				border-radius: 8px;
-				overflow: hidden;
-				background: #1e6bff;
-				background: -webkit-linear-gradient(left, #0a3dff, #2f8bff, #9fe3ff);
-				background: linear-gradient(to right, #0a3dff, #2f8bff, #9fe3ff);
-				box-shadow: 0 0 12px rgba(80, 170, 255, 0.9);
+				min-width: 3%;
 				-webkit-transition: width 0.6s ease-out;
 				transition: width 0.6s ease-out;
 			}
-			/* brillo que recorre la barra para que nunca se vea congelada */
-			#loading-progress:after {
-				content: "";
+			#chakra {
 				position: absolute;
-				top: 0;
-				left: -40%;
-				width: 40%;
-				height: 100%;
-				background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,0.7), rgba(255,255,255,0));
-				background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.7), rgba(255,255,255,0));
-				-webkit-animation: genkai-brillo 1.6s linear infinite;
-				animation: genkai-brillo 1.6s linear infinite;
+				top: 0; left: 0; right: 0; bottom: 0;
+				overflow: hidden;
+				background-color: #1e6bff;
+				background-image:
+					-webkit-repeating-linear-gradient(120deg, rgba(255,255,255,0) 0, rgba(255,255,255,0) 10px, rgba(190,235,255,0.35) 14px, rgba(255,255,255,0) 18px),
+					-webkit-linear-gradient(top, #8fdcff, #2f8bff 45%, #0a3dff);
+				background-image:
+					repeating-linear-gradient(120deg, rgba(255,255,255,0) 0, rgba(255,255,255,0) 10px, rgba(190,235,255,0.35) 14px, rgba(255,255,255,0) 18px),
+					linear-gradient(to bottom, #8fdcff, #2f8bff 45%, #0a3dff);
+				background-size: 40px 100%, 100% 100%;
+				box-shadow: 0 0 14px #2f8bff, 0 0 4px #bfe9ff;
+				-webkit-animation: chakra-fluye 0.8s linear infinite;
+				animation: chakra-fluye 0.8s linear infinite;
 			}
-			@-webkit-keyframes genkai-brillo { from { left: -40%; } to { left: 100%; } }
-			@keyframes genkai-brillo { from { left: -40%; } to { left: 100%; } }
+			@-webkit-keyframes chakra-fluye { from { background-position: 0 0, 0 0; } to { background-position: 40px 0, 0 0; } }
+			@keyframes chakra-fluye { from { background-position: 0 0, 0 0; } to { background-position: 40px 0, 0 0; } }
+
+			/* ---- Shuriken girando en la punta ---- */
+			#shuriken {
+				position: absolute;
+				right: -21px;
+				top: -14px;
+				width: 42px;
+				height: 42px;
+				-webkit-filter: drop-shadow(0 0 7px #6cc4ff);
+				filter: drop-shadow(0 0 7px #6cc4ff);
+				-webkit-animation: shuriken-gira 0.7s linear infinite;
+				animation: shuriken-gira 0.7s linear infinite;
+			}
+			#shuriken svg { display: block; width: 42px; height: 42px; }
+			@-webkit-keyframes shuriken-gira { from { -webkit-transform: rotate(0deg); } to { -webkit-transform: rotate(360deg); } }
+			@keyframes shuriken-gira { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 			#messages {
 				display: none;
 				clear: both;
-				padding-top: 14px;
+				padding-top: 16px;
 				text-align: center;
 				font-size: 16px;
 			}
@@ -99,7 +147,22 @@
 			<span id="status-left" data-lang="loading"></span>
 			<span id="status-right">0%</span>
 			<div id="loading">
-				<div id="loading-progress"></div>
+				<div id="loading-progress">
+					<div id="chakra"></div>
+					<div id="shuriken">
+						<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+							<defs>
+								<linearGradient id="acero" x1="0" y1="0" x2="1" y2="1">
+									<stop offset="0" stop-color="#ffffff" />
+									<stop offset="0.5" stop-color="#b9c6d8" />
+									<stop offset="1" stop-color="#5d6b80" />
+								</linearGradient>
+							</defs>
+							<path d="M50 2 L62 38 L98 50 L62 62 L50 98 L38 62 L2 50 L38 38 Z" fill="url(#acero)" stroke="#1b2230" stroke-width="3" stroke-linejoin="round" />
+							<circle cx="50" cy="50" r="9" fill="#0b1224" stroke="#c9d3e0" stroke-width="3" />
+						</svg>
+					</div>
+				</div>
 			</div>
 			<div id="messages"></div>
 		</div>
