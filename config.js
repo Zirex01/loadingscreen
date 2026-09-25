@@ -15,7 +15,7 @@
 // "english"
 // "polish"
 // "russian"
-config.language = "english"
+config.language = "spanish"
 
 // Use an image for the logo instead of text
 config.logo_use_image = false
@@ -72,6 +72,13 @@ config.background_images = [
 	"screen3.png",
 	"screen4.png",
 ]
+
+// (Image-background only)
+// UNA SOLA IMAGEN POR CONEXION
+// true  = al entrar al servidor se elige una imagen al azar de la lista
+//         y se queda fija hasta que el jugador se vuelva a conectar
+// false = las imagenes rotan cada "background_images_duration" ms
+config.background_one_per_connection = true
 
 // (Image-background only)
 // Random background images order?
@@ -154,15 +161,21 @@ config.messages_fade_duration = 1000
 config.errors_show_ingame = true
 
 
+// ============================================================
+// NO TOCAR: elige una imagen al azar por conexion
+// (intenta no repetir la misma imagen de la ultima vez)
+// ============================================================
+if (config.background_one_per_connection && config.background_images.length > 1) {
+	var ultima = null
+	try { ultima = localStorage.getItem("genkai_ultimo_fondo") } catch (e) {}
 
+	var opciones = config.background_images.filter(function (img) {
+		return img !== ultima
+	})
+	if (opciones.length === 0) opciones = config.background_images
 
+	var elegida = opciones[Math.floor(Math.random() * opciones.length)]
+	try { localStorage.setItem("genkai_ultimo_fondo", elegida) } catch (e) {}
 
-
-
-
-
-
-
-
-
-
+	config.background_images = [elegida]
+}

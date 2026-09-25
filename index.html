@@ -3,7 +3,7 @@
 	<head>
 		<meta name="robots" content="noindex" />
 		<meta charset="utf-8" />
-		<title>SleekLoad</title>
+		<title>Genkai - Cargando</title>
 		<script type="text/javascript">
 			document.write(
 				'<link rel="stylesheet" href="css/sleek.css?' +
@@ -11,6 +11,81 @@
 					'">'
 			);
 		</script>
+		<!-- ===== Barra de carga (Genkai) ===== -->
+		<style>
+			#status-container {
+				position: fixed;
+				left: 50%;
+				bottom: 22px;
+				width: 46%;
+				margin-left: -23%;
+				font-size: 14px;
+				line-height: 18px;
+				z-index: 5;
+			}
+			#status-left {
+				float: left;
+				max-width: 80%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: #cfe6ff;
+				letter-spacing: 1px;
+			}
+			#status-right {
+				float: right;
+				font-weight: bold;
+				color: #ffffff;
+			}
+			#loading {
+				clear: both;
+				position: relative;
+				top: 6px;
+				width: 100%;
+				height: 8px;
+				overflow: hidden;
+				border-radius: 8px;
+				background-color: rgba(5, 15, 45, 0.75);
+				border: 1px solid rgba(90, 170, 255, 0.45);
+				box-shadow: 0 0 10px rgba(30, 110, 255, 0.35);
+			}
+			#loading-progress {
+				position: relative;
+				height: 100%;
+				width: 0%;
+				min-width: 4%;
+				border-radius: 8px;
+				overflow: hidden;
+				background: #1e6bff;
+				background: -webkit-linear-gradient(left, #0a3dff, #2f8bff, #9fe3ff);
+				background: linear-gradient(to right, #0a3dff, #2f8bff, #9fe3ff);
+				box-shadow: 0 0 12px rgba(80, 170, 255, 0.9);
+				-webkit-transition: width 0.6s ease-out;
+				transition: width 0.6s ease-out;
+			}
+			/* brillo que recorre la barra para que nunca se vea congelada */
+			#loading-progress:after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: -40%;
+				width: 40%;
+				height: 100%;
+				background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,0.7), rgba(255,255,255,0));
+				background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.7), rgba(255,255,255,0));
+				-webkit-animation: genkai-brillo 1.6s linear infinite;
+				animation: genkai-brillo 1.6s linear infinite;
+			}
+			@-webkit-keyframes genkai-brillo { from { left: -40%; } to { left: 100%; } }
+			@keyframes genkai-brillo { from { left: -40%; } to { left: 100%; } }
+			#messages {
+				display: none;
+				clear: both;
+				padding-top: 14px;
+				text-align: center;
+				font-size: 16px;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="video-container"></div>
@@ -39,5 +114,46 @@
 		<script src="js/vendor/jquery-2.1.1.min.js"></script>
 		<script src="js/vendor/jquery.backstretch.min.js"></script>
 		<script src="js/sleek.js"></script>
+		<!-- ===== Texto de la barra de carga en espanol ===== -->
+		<script>
+			(function () {
+				var traducciones = {
+					"Retrieving server info...": "Obteniendo informacion del servidor...",
+					"Sending client info...": "Enviando informacion del cliente...",
+					"Client info sent!": "Informacion enviada",
+					"Mounting Addons": "Montando addons...",
+					"Workshop Complete": "Addons del Workshop listos",
+					"Lua Started!": "Iniciando scripts...",
+					"Starting Lua...": "Iniciando scripts...",
+					"Received all Lua files we needed!": "Scripts recibidos",
+					"Ready to play!": "Listo para jugar!"
+				};
+				function ponerTexto(txt) {
+					var el = document.getElementById("status-left");
+					if (el) el.textContent = txt;
+				}
+				function envolver(nombre, fn) {
+					var original = window[nombre];
+					window[nombre] = function () {
+						if (typeof original === "function") original.apply(this, arguments);
+						try { fn.apply(this, arguments); } catch (e) {}
+					};
+				}
+				envolver("SetStatusChanged", function (status) {
+					var t = traducciones[status];
+					if (!t) {
+						var m;
+						if ((m = /^(\d+)\/(\d+)/.exec(status))) t = "Descargando addons del Workshop (" + m[1] + "/" + m[2] + ")";
+						else if ((m = /^Downloaded (\d+) of (\d+)/.exec(status))) t = "Descargando archivos (" + m[1] + "/" + m[2] + ")";
+						else t = status;
+					}
+					ponerTexto(t);
+				});
+				envolver("DownloadingFile", function (archivo) {
+					var nombre = String(archivo).split("/").pop();
+					ponerTexto("Descargando: " + nombre);
+				});
+			})();
+		</script>
 	</body>
 </html>
