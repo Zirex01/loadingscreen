@@ -68,9 +68,6 @@ config.background_map_based = false
 // (Place the image files in the backgrounds/images folder)
 config.background_images = [
 	"screen1.png",
-	"screen2.png",
-	"screen3.png",
-	"screen4.png",
 ]
 
 // (Image-background only)
