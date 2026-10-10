@@ -181,5 +181,45 @@
 				});
 			})();
 		</script>
+		<!-- ===== Color de la barra segun la imagen de fondo ===== -->
+		<script>
+			(function () {
+				// Nombre de imagen -> color de brillo de la barra
+				// Si los colores salen cambiados, solo cambia el orden aqui
+				var colores = {
+					"carga1.png": "#ff3b2f", // rojo  (Madara)
+					"carga2.png": "#2fa8ff", // azul  (Tobirama)
+					"carga3.png": "#2fffb0"  // verde (Hashirama)
+				};
+
+				function aplicar(c) {
+					var css =
+						"#loading{border-color:" + c + "!important;box-shadow:0 0 14px " + c + "66,0 0 12px rgba(0,0,0,.8)!important;}" +
+						"#loading:before,#loading:after{border-color:" + c + "!important;}" +
+						"#loading-progress{-webkit-filter:drop-shadow(0 0 5px " + c + ");filter:drop-shadow(0 0 5px " + c + ");}" +
+						"#loading-progress:after{box-shadow:0 0 12px 3px " + c + "!important;}" +
+						"#status-right{text-shadow:0 0 8px " + c + ",0 1px 3px rgba(0,0,0,.9)!important;}" +
+						"#status-left:before{content:'\\25C6  ';color:" + c + ";}";
+					var s = document.createElement("style");
+					s.type = "text/css";
+					s.appendChild(document.createTextNode(css));
+					document.head.appendChild(s);
+				}
+
+				// Espera a que config.js haya elegido la imagen
+				var intentos = 0;
+				var t = setInterval(function () {
+					intentos++;
+					var cfg = window.config;
+					if (cfg && cfg.background_images && cfg.background_images.length === 1) {
+						clearInterval(t);
+						var c = colores[cfg.background_images[0]];
+						if (c) aplicar(c);
+					} else if (intentos > 50) {
+						clearInterval(t); // se queda con el brillo blanco por defecto
+					}
+				}, 100);
+			})();
+		</script>
 	</body>
 </html>
