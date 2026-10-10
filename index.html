@@ -187,9 +187,9 @@
 				// Nombre de imagen -> color de brillo de la barra
 				// Si los colores salen cambiados, solo cambia el orden aqui
 				var colores = {
-					"carga1.png": "#ff3b2f", // rojo  (Madara)
+					"carga1.png": "#2fffb0", // verde (Hashirama)
 					"carga2.png": "#2fa8ff", // azul  (Tobirama)
-					"carga3.png": "#2fffb0"  // verde (Hashirama)
+					"carga3.png": "#ff3b2f"  // rojo  (Madara)
 				};
 
 				function aplicar(c) {
@@ -213,9 +213,12 @@
 					var cfg = window.config;
 					if (cfg && cfg.background_images && cfg.background_images.length === 1) {
 						clearInterval(t);
-						var c = colores[cfg.background_images[0]];
+						// sleek.js le agrega "backgrounds/images/" al nombre, asi que
+						// nos quedamos solo con el nombre del archivo
+						var nombre = String(cfg.background_images[0]).split("/").pop();
+						var c = colores[nombre];
 						if (c) aplicar(c);
-					} else if (intentos > 50) {
+					} else if (intentos > 300) {
 						clearInterval(t); // se queda con el brillo blanco por defecto
 					}
 				}, 100);
